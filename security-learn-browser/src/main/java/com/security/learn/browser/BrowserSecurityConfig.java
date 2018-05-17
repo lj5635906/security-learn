@@ -40,6 +40,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         // 验证码过滤器
         ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
         validateCodeFilter.setAuthenticationFailureHandler(securityAuthenticationFailureHandler);
+        validateCodeFilter.setSecurityProperties(securityProperties);
+        validateCodeFilter.afterPropertiesSet();
 
         http
                 // 验证码过滤器在 UsernamePasswordAuthenticationFilter 之间执行

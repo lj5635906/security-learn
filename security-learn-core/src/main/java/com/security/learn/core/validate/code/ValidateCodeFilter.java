@@ -1,9 +1,11 @@
 package com.security.learn.core.validate.code;
 
+import com.security.learn.core.properties.SecurityProperties;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -14,6 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 图片验证验证过滤器
@@ -29,21 +33,45 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
     private AuthenticationFailureHandler authenticationFailureHandler;
 
+
+    /**
+     * 需要拦截的URL
+     */
+    private Set<String> urls = new HashSet<>();
+
+    private SecurityProperties securityProperties;
+
+    private AntPathMatcher pathMatcher = new AntPathMatcher();
+
+    @Override
+    public void afterPropertiesSet() throws ServletException {
+        super.afterPropertiesSet();
+        String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getImage().getUrl(), ",");
+        for (String configUrl : configUrls) {
+            urls.add(configUrl);
+        }
+        urls.add("/authentication/form");
+    }
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // 验证是否为登陆请求
-        if (StringUtils.equals("/authentication/form", request.getRequestURI())
-                && StringUtils.equalsIgnoreCase(request.getMethod(), "post")) {
+        boolean action = false;
+        for (String url : urls) {
+            if (pathMatcher.match(url, request.getRequestURI())) {
+                action = true;
+            }
+        }
 
+        if (action) {
+            // 登陆请求
             try {
                 validate(new ServletWebRequest(request));
             } catch (ValidateCodeException e) {
-                // 验证码错误使用认证失败处理器 处理
                 authenticationFailureHandler.onAuthenticationFailure(request, response, e);
                 return;
             }
-
         }
 
         // 不是登陆请求直接调用过滤器链后边的过滤器
@@ -53,6 +81,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 
     /**
      * 检查验证码
+     *
      * @param request ServletWebRequest
      * @throws ServletRequestBindingException
      */
@@ -80,5 +109,9 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 
     public void setAuthenticationFailureHandler(AuthenticationFailureHandler authenticationFailureHandler) {
         this.authenticationFailureHandler = authenticationFailureHandler;
+    }
+
+    public void setSecurityProperties(SecurityProperties securityProperties) {
+        this.securityProperties = securityProperties;
     }
 }
