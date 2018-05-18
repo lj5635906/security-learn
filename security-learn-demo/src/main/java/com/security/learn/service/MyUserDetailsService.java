@@ -33,7 +33,7 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.info("登陆用户名： {}", username);
-        UserInfo userInfo = repository.findByUsername(username);
+        UserInfo userInfo = repository.findByUsernameOrMobile(username,username);
         if (null == userInfo) {
             throw new UsernameNotFoundException("用户信息不存在.");
         }

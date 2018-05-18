@@ -2,7 +2,9 @@ package com.security.learn.browser;
 
 import com.security.learn.browser.authentication.SecurityAuthenticationFailureHandler;
 import com.security.learn.browser.authentication.SecurityAuthenticationSuccessHandler;
+import com.security.learn.core.authentication.mobile.SmsValidateCodeAuthenticationConfig;
 import com.security.learn.core.properties.SecurityProperties;
+import com.security.learn.core.validate.code.SmsValidateCodeFilter;
 import com.security.learn.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -54,6 +56,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     private SecurityAuthenticationFailureHandler securityAuthenticationFailureHandler;
     @Autowired
     private SecurityProperties securityProperties;
+    @Autowired
+    private SmsValidateCodeAuthenticationConfig smsValidateCodeAuthenticationConfig;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -63,8 +67,15 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         validateCodeFilter.setSecurityProperties(securityProperties);
         validateCodeFilter.afterPropertiesSet();
 
+        SmsValidateCodeFilter smsValidateCodeFilter = new SmsValidateCodeFilter();
+        smsValidateCodeFilter.setAuthenticationFailureHandler(securityAuthenticationFailureHandler);
+        smsValidateCodeFilter.setSecurityProperties(securityProperties);
+        smsValidateCodeFilter.afterPropertiesSet();
+
         http
-                // 验证码过滤器在 UsernamePasswordAuthenticationFilter 之间执行
+                // 短信验证码过滤器在 UsernamePasswordAuthenticationFilter 之间执行
+                .addFilterBefore(smsValidateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                // 图形验证码过滤器在 UsernamePasswordAuthenticationFilter 之间执行
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 // 表单登陆
                 .formLogin()
@@ -89,6 +100,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .csrf().disable();
+                .csrf().disable()
+                .apply(smsValidateCodeAuthenticationConfig);
     }
 }
