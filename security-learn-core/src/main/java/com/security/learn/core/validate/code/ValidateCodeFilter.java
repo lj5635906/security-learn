@@ -1,6 +1,7 @@
 package com.security.learn.core.validate.code;
 
 import com.security.learn.core.properties.SecurityProperties;
+import com.security.learn.core.validate.code.image.ImageCode;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;

@@ -1,4 +1,4 @@
-package com.security.learn.core.validate.code.generator;
+package com.security.learn.core.validate.code;
 
 import com.security.learn.core.validate.code.ValidateCode;
 import org.springframework.web.context.request.ServletWebRequest;

@@ -1,7 +1,8 @@
-package com.security.learn.core.validate.code.generator;
+package com.security.learn.core.validate.code.sms;
 
 import com.security.learn.core.properties.SecurityProperties;
 import com.security.learn.core.validate.code.ValidateCode;
+import com.security.learn.core.validate.code.ValidateCodeGenerator;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.ServletWebRequest;

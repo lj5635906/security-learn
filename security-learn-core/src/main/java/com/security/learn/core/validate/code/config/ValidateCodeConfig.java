@@ -1,8 +1,8 @@
 package com.security.learn.core.validate.code.config;
 
 import com.security.learn.core.properties.SecurityProperties;
-import com.security.learn.core.validate.code.generator.ImageCodeGenerator;
-import com.security.learn.core.validate.code.generator.ValidateCodeGenerator;
+import com.security.learn.core.validate.code.image.ImageCodeGenerator;
+import com.security.learn.core.validate.code.ValidateCodeGenerator;
 import com.security.learn.core.validate.code.sms.DefaultSmsCoderSender;
 import com.security.learn.core.validate.code.sms.SmsCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.security.learn.core.validate.code;
 
-import com.security.learn.core.validate.code.generator.ValidateCodeGenerator;
+import com.security.learn.core.validate.code.image.ImageCode;
 import com.security.learn.core.validate.code.sms.SmsCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;

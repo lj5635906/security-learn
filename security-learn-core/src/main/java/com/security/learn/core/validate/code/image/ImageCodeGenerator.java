@@ -1,7 +1,7 @@
-package com.security.learn.core.validate.code.generator;
+package com.security.learn.core.validate.code.image;
 
 import com.security.learn.core.properties.SecurityProperties;
-import com.security.learn.core.validate.code.ImageCode;
+import com.security.learn.core.validate.code.ValidateCodeGenerator;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
