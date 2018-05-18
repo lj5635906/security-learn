@@ -1,6 +1,6 @@
 package com.security.learn.core.validate.code;
 
-import com.security.learn.core.properties.SecurityConstants;
+import com.security.learn.core.constants.SecurityConstants;
 
 /**
  * 验证码类型

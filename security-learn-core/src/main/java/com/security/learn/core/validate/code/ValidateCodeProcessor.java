@@ -25,4 +25,11 @@ public interface ValidateCodeProcessor {
      */
     void create(ServletWebRequest request) throws Exception;
 
+    /**
+     * 校验验证码
+     *
+     * @param servletWebRequest ServletWebRequest
+     * @throws Exception Exception
+     */
+    void validate(ServletWebRequest servletWebRequest);
 }

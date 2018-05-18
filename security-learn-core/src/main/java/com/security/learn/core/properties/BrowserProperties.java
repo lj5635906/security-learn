@@ -1,6 +1,6 @@
 package com.security.learn.core.properties;
 
-import com.security.learn.core.config.LoginResponseType;
+import com.security.learn.core.constants.LoginResponseType;
 
 /**
  * ${DESCRIPTION}

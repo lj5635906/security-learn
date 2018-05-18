@@ -3,14 +3,15 @@ package com.security.learn.browser;
 import com.security.learn.browser.authentication.SecurityAuthenticationFailureHandler;
 import com.security.learn.browser.authentication.SecurityAuthenticationSuccessHandler;
 import com.security.learn.core.authentication.mobile.SmsValidateCodeAuthenticationConfig;
+import com.security.learn.core.config.AbstractBaseSecurityConfig;
+import com.security.learn.core.config.ValidateCodeSecurityConfig;
+import com.security.learn.core.constants.SecurityConstants;
 import com.security.learn.core.properties.SecurityProperties;
-import com.security.learn.core.validate.code.SmsValidateCodeFilter;
 import com.security.learn.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,10 +29,10 @@ import javax.sql.DataSource;
  * @create 2018-05-17 11:29
  **/
 @Configuration
-public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
+public class BrowserSecurityConfig extends AbstractBaseSecurityConfig {
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -40,67 +41,54 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private SecurityProperties securityProperties;
+    @Autowired
+    private SmsValidateCodeAuthenticationConfig smsValidateCodeAuthenticationConfig;
+    @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
+        applyPasswordAuthenticationConfig(http);
+
+        http
+                // 验证码校验过滤器 配置
+                .apply(validateCodeSecurityConfig)
+                .and()
+                // 根据短信认证 配置
+                .apply(smsValidateCodeAuthenticationConfig)
+                .and()
+                // 记住我相关
+                .rememberMe()
+                .tokenRepository(persistentTokenRepository())
+                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                .userDetailsService(userDetailsService)
+                .and()
+                .authorizeRequests()
+                // 不需要身份认证的URL
+                .antMatchers(SecurityConstants.DEFAULT_UNAUTHORIZED_URL,
+                        securityProperties.getBrowser().getLoginPage(),
+                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*").permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .csrf().disable()
+        ;
+    }
+
+    /**
+     * rememberMme 持久化 token
+     *
+     * @return PersistentTokenRepository
+     */
     @Bean
-    public PersistentTokenRepository persistentTokenRepository(){
+    public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
         // 启动时创建表
 //        tokenRepository.setCreateTableOnStartup(true);
         return tokenRepository;
-    }
-
-    @Autowired
-    private SecurityAuthenticationSuccessHandler securityAuthenticationSuccessHandler;
-    @Autowired
-    private SecurityAuthenticationFailureHandler securityAuthenticationFailureHandler;
-    @Autowired
-    private SecurityProperties securityProperties;
-    @Autowired
-    private SmsValidateCodeAuthenticationConfig smsValidateCodeAuthenticationConfig;
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        // 验证码过滤器
-        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
-        validateCodeFilter.setAuthenticationFailureHandler(securityAuthenticationFailureHandler);
-        validateCodeFilter.setSecurityProperties(securityProperties);
-        validateCodeFilter.afterPropertiesSet();
-
-        SmsValidateCodeFilter smsValidateCodeFilter = new SmsValidateCodeFilter();
-        smsValidateCodeFilter.setAuthenticationFailureHandler(securityAuthenticationFailureHandler);
-        smsValidateCodeFilter.setSecurityProperties(securityProperties);
-        smsValidateCodeFilter.afterPropertiesSet();
-
-        http
-                // 短信验证码过滤器在 UsernamePasswordAuthenticationFilter 之间执行
-                .addFilterBefore(smsValidateCodeFilter, UsernamePasswordAuthenticationFilter.class)
-                // 图形验证码过滤器在 UsernamePasswordAuthenticationFilter 之间执行
-                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
-                // 表单登陆
-                .formLogin()
-                    // 跳转登陆地址
-                    .loginPage("/authentication/require")
-                    // 自定义登陆请求
-                    .loginProcessingUrl("/authentication/form")
-                    .successHandler(securityAuthenticationSuccessHandler)
-                    .failureHandler(securityAuthenticationFailureHandler)
-                .and()
-                    // 记住我相关
-                    .rememberMe()
-                    .tokenRepository(persistentTokenRepository())
-                    .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
-                    .userDetailsService(userDetailsService)
-                .and()
-                    .authorizeRequests()
-                    // /demo-signIn.html 不需要身份认证
-                    .antMatchers("/authentication/require",
-                            securityProperties.getBrowser().getLoginPage(),
-                            "/code/*").permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .csrf().disable()
-                .apply(smsValidateCodeAuthenticationConfig);
     }
 }

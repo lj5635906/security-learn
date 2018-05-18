@@ -5,7 +5,7 @@ package com.security.learn.browser.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.security.learn.core.config.LoginResponseType;
+import com.security.learn.core.constants.LoginResponseType;
 import com.security.learn.core.properties.SecurityProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

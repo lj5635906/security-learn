@@ -28,7 +28,6 @@ public class SmsValidateCodeAuthenticationConfig extends SecurityConfigurerAdapt
     @Autowired
     private UserDetailsService userDetailsService;
 
-
     @Override
     public void configure(HttpSecurity http) throws Exception {
         // 配置

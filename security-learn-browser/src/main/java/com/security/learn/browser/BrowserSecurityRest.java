@@ -1,6 +1,7 @@
 package com.security.learn.browser;
 
 import com.security.learn.browser.support.SimpleResponse;
+import com.security.learn.core.constants.SecurityConstants;
 import com.security.learn.core.properties.SecurityProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,9 +45,9 @@ public class BrowserSecurityRest {
      *
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
-     * @return
+     * @return SimpleResponse
      */
-    @RequestMapping("/authentication/require")
+    @RequestMapping(SecurityConstants.DEFAULT_UNAUTHORIZED_URL)
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     public SimpleResponse requireAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

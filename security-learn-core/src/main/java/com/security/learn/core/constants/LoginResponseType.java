@@ -1,4 +1,4 @@
-package com.security.learn.core.config;
+package com.security.learn.core.constants;
 
 /**
  * 登陆响应类型

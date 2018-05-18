@@ -1,5 +1,6 @@
 package com.security.learn.core.validate.code;
 
+import com.security.learn.core.constants.SecurityConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class ValidateCodeRest {
 
-    public static final String session_key = "session_key_image_code";
-
     @Autowired
     private ValidateCodeProcessorHolder validateCodeProcessorHolder;
 
@@ -31,7 +30,7 @@ public class ValidateCodeRest {
      * @param response HttpServletResponse
      * @throws Exception Exception
      */
-    @GetMapping("/code/{type}")
+    @GetMapping(SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/{type}")
     public void createCodeImage(HttpServletRequest request, HttpServletResponse response,
                                 @PathVariable String type) throws Exception {
         validateCodeProcessorHolder.findValidateCodeProcessor(type).create(new ServletWebRequest(request, response));

@@ -1,6 +1,6 @@
 package com.security.learn.core.validate.code.sms;
 
-import com.security.learn.core.properties.SecurityConstants;
+import com.security.learn.core.constants.SecurityConstants;
 import com.security.learn.core.validate.code.AbstractValidateCodeProcessor;
 import com.security.learn.core.validate.code.ValidateCode;
 import org.springframework.beans.factory.annotation.Autowired;
