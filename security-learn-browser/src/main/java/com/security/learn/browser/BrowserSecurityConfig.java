@@ -9,9 +9,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 /**
  * ${DESCRIPTION}
@@ -26,6 +31,21 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository(){
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        // 启动时创建表
+//        tokenRepository.setCreateTableOnStartup(true);
+        return tokenRepository;
     }
 
     @Autowired
@@ -48,18 +68,24 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 // 表单登陆
                 .formLogin()
-                // 跳转登陆地址
-                .loginPage("/authentication/require")
-                // 自定义登陆请求
-                .loginProcessingUrl("/authentication/form")
-                .successHandler(securityAuthenticationSuccessHandler)
-                .failureHandler(securityAuthenticationFailureHandler)
+                    // 跳转登陆地址
+                    .loginPage("/authentication/require")
+                    // 自定义登陆请求
+                    .loginProcessingUrl("/authentication/form")
+                    .successHandler(securityAuthenticationSuccessHandler)
+                    .failureHandler(securityAuthenticationFailureHandler)
                 .and()
-                .authorizeRequests()
-                // /demo-signIn.html 不需要身份认证
-                .antMatchers("/authentication/require",
-                        securityProperties.getBrowser().getLoginPage(),
-                        "/code/image").permitAll()
+                    // 记住我相关
+                    .rememberMe()
+                    .tokenRepository(persistentTokenRepository())
+                    .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                    .userDetailsService(userDetailsService)
+                .and()
+                    .authorizeRequests()
+                    // /demo-signIn.html 不需要身份认证
+                    .antMatchers("/authentication/require",
+                            securityProperties.getBrowser().getLoginPage(),
+                            "/code/image").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

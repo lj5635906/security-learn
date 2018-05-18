@@ -15,6 +15,11 @@ public class BrowserProperties {
 
     private LoginResponseType loginType = LoginResponseType.JSON;
 
+    /**
+     * 记住我，token过期时间默认1小时
+     */
+    private int rememberMeSeconds = 3600;
+
     public LoginResponseType getLoginType() {
         return loginType;
     }
@@ -29,5 +34,13 @@ public class BrowserProperties {
 
     public void setLoginPage(String loginPage) {
         this.loginPage = loginPage;
+    }
+
+    public int getRememberMeSeconds() {
+        return rememberMeSeconds;
+    }
+
+    public void setRememberMeSeconds(int rememberMeSeconds) {
+        this.rememberMeSeconds = rememberMeSeconds;
     }
 }
