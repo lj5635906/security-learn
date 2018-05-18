@@ -1,5 +1,6 @@
 package com.security.learn.core.validate.code;
 
+import com.security.learn.core.properties.SecurityConstants;
 import com.security.learn.core.properties.SecurityProperties;
 import com.security.learn.core.validate.code.image.ImageValidateCode;
 import org.apache.commons.lang.StringUtils;
@@ -87,7 +88,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
      */
     private void validate(ServletWebRequest request) throws ServletRequestBindingException {
         // 从session中获取验证码
-        ImageValidateCode codeInSession = (ImageValidateCode) sessionStrategy.getAttribute(request, ValidateCodeRest.session_key);
+        ImageValidateCode codeInSession = (ImageValidateCode) sessionStrategy.getAttribute(request, ValidateCodeProcessor.SESSION_KEY_PREFIX + "IMAGECODE");
         // 从请求中拿到验证码
         String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), "imageCode");
 
