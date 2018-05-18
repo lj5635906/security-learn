@@ -7,7 +7,7 @@ package com.security.learn.core.validate.code.sms;
  * @email 190642964@qq.com
  * @create 2018-05-18 9:49
  **/
-public interface SmsCodeSender {
+public interface SmsValidateCodeSender {
 
     /**
      * 发送短信接口

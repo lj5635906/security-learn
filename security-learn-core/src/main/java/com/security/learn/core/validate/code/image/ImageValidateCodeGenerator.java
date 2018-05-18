@@ -16,7 +16,7 @@ import java.util.Random;
  * @email 190642964@qq.com
  * @create 2017-11-30 15:09
  **/
-public class ImageCodeGenerator implements ValidateCodeGenerator {
+public class ImageValidateCodeGenerator implements ValidateCodeGenerator {
 
     private SecurityProperties securityProperties;
 
@@ -26,7 +26,7 @@ public class ImageCodeGenerator implements ValidateCodeGenerator {
      * @return ImageCode
      */
     @Override
-    public ImageCode generate(ServletWebRequest request) {
+    public ImageValidateCode generate(ServletWebRequest request) {
         // 图片长
         int width = ServletRequestUtils.getIntParameter(request.getRequest(),"width",securityProperties.getCode().getImage().getWidth());
         // 图片高
@@ -59,7 +59,7 @@ public class ImageCodeGenerator implements ValidateCodeGenerator {
 
         g.dispose();
 
-        return new ImageCode(image, sRand, securityProperties.getCode().getImage().getExpireIn());
+        return new ImageValidateCode(image, sRand, securityProperties.getCode().getImage().getExpireIn());
     }
 
     /**

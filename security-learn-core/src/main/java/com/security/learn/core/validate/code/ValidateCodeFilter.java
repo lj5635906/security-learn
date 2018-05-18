@@ -1,7 +1,7 @@
 package com.security.learn.core.validate.code;
 
 import com.security.learn.core.properties.SecurityProperties;
-import com.security.learn.core.validate.code.image.ImageCode;
+import com.security.learn.core.validate.code.image.ImageValidateCode;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
@@ -33,7 +33,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
     private AuthenticationFailureHandler authenticationFailureHandler;
-
 
     /**
      * 需要拦截的URL
@@ -88,7 +87,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
      */
     private void validate(ServletWebRequest request) throws ServletRequestBindingException {
         // 从session中获取验证码
-        ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(request, ValidateCodeRest.session_key);
+        ImageValidateCode codeInSession = (ImageValidateCode) sessionStrategy.getAttribute(request, ValidateCodeRest.session_key);
         // 从请求中拿到验证码
         String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), "imageCode");
 

@@ -1,10 +1,10 @@
 package com.security.learn.core.validate.code.config;
 
 import com.security.learn.core.properties.SecurityProperties;
-import com.security.learn.core.validate.code.image.ImageCodeGenerator;
+import com.security.learn.core.validate.code.image.ImageValidateCodeGenerator;
 import com.security.learn.core.validate.code.ValidateCodeGenerator;
-import com.security.learn.core.validate.code.sms.DefaultSmsCoderSender;
-import com.security.learn.core.validate.code.sms.SmsCodeSender;
+import com.security.learn.core.validate.code.sms.DefaultSmsValidateCoderSender;
+import com.security.learn.core.validate.code.sms.SmsValidateCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -33,11 +33,11 @@ public class ValidateCodeConfig {
      * @return ValidateCodeGenerator
      */
     @Bean
-    @ConditionalOnMissingBean(name = "imageCodeGenerator")
-    public ValidateCodeGenerator imageCodeGenerator() {
-        ImageCodeGenerator imageGenerator = new ImageCodeGenerator();
-        imageGenerator.setSecurityProperties(securityProperties);
-        return imageGenerator;
+    @ConditionalOnMissingBean(name = "imageValidateCodeGenerator")
+    public ValidateCodeGenerator imageValidateCodeGenerator() {
+        ImageValidateCodeGenerator imageValidateCodeGenerator = new ImageValidateCodeGenerator();
+        imageValidateCodeGenerator.setSecurityProperties(securityProperties);
+        return imageValidateCodeGenerator;
     }
 
     /**
@@ -45,8 +45,8 @@ public class ValidateCodeConfig {
      * @return SmsCodeSender
      */
     @Bean
-    @ConditionalOnMissingBean(SmsCodeSender.class)
-    public SmsCodeSender smsCodeSender(){
-        return new DefaultSmsCoderSender();
+    @ConditionalOnMissingBean(SmsValidateCodeSender.class)
+    public SmsValidateCodeSender smsCodeSender(){
+        return new DefaultSmsValidateCoderSender();
     }
 }

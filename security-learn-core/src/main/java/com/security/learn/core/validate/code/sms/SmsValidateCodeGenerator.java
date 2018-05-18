@@ -14,8 +14,8 @@ import org.springframework.web.context.request.ServletWebRequest;
  * @email 190642964@qq.com
  * @create 2017-11-30 15:09
  **/
-@org.springframework.stereotype.Component("smsCodeGenerator")
-public class SmsCodeGenerator implements ValidateCodeGenerator {
+@org.springframework.stereotype.Component("smsValidateCodeGenerator")
+public class SmsValidateCodeGenerator implements ValidateCodeGenerator {
 
     @Autowired
     private SecurityProperties securityProperties;

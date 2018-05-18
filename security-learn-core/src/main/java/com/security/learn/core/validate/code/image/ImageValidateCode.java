@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * @email 190642964@qq.com
  * @create 2018-05-17 16:40
  **/
-public class ImageCode extends ValidateCode {
+public class ImageValidateCode extends ValidateCode {
 
     /**
      * 图片
@@ -25,12 +25,12 @@ public class ImageCode extends ValidateCode {
      * @param code
      * @param expire 过期时间，秒
      */
-    public ImageCode(BufferedImage image, String code, int expire) {
+    public ImageValidateCode(BufferedImage image, String code, int expire) {
         super(code, expire);
         this.image = image;
     }
 
-    public ImageCode(BufferedImage image, String code, LocalDateTime expireTime) {
+    public ImageValidateCode(BufferedImage image, String code, LocalDateTime expireTime) {
         super(code, expireTime);
         this.image = image;
     }
