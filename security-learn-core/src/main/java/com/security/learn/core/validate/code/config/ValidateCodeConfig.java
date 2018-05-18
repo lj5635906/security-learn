@@ -1,8 +1,10 @@
-package com.security.learn.browser;
+package com.security.learn.core.validate.code.config;
 
 import com.security.learn.core.properties.SecurityProperties;
-import com.security.learn.core.validate.code.ImageGenerator;
-import com.security.learn.core.validate.code.ValidateCodeGenerator;
+import com.security.learn.core.validate.code.generator.ImageCodeGenerator;
+import com.security.learn.core.validate.code.generator.ValidateCodeGenerator;
+import com.security.learn.core.validate.code.sms.DefaultSmsCoderSender;
+import com.security.learn.core.validate.code.sms.SmsCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -33,8 +35,18 @@ public class ValidateCodeConfig {
     @Bean
     @ConditionalOnMissingBean(name = "imageCodeGenerator")
     public ValidateCodeGenerator imageCodeGenerator() {
-        ImageGenerator imageGenerator = new ImageGenerator();
+        ImageCodeGenerator imageGenerator = new ImageCodeGenerator();
         imageGenerator.setSecurityProperties(securityProperties);
         return imageGenerator;
+    }
+
+    /**
+     * 发送短信验证码
+     * @return SmsCodeSender
+     */
+    @Bean
+    @ConditionalOnMissingBean(SmsCodeSender.class)
+    public SmsCodeSender smsCodeSender(){
+        return new DefaultSmsCoderSender();
     }
 }

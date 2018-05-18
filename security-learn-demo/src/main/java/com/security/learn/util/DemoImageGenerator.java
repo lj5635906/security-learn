@@ -1,8 +1,7 @@
 package com.security.learn.util;
 
 import com.security.learn.core.validate.code.ImageCode;
-import com.security.learn.core.validate.code.ValidateCodeGenerator;
-import org.springframework.stereotype.Component;
+import com.security.learn.core.validate.code.generator.ValidateCodeGenerator;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**

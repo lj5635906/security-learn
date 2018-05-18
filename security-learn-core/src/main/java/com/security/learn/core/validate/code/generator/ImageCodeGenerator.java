@@ -1,6 +1,7 @@
-package com.security.learn.core.validate.code;
+package com.security.learn.core.validate.code.generator;
 
 import com.security.learn.core.properties.SecurityProperties;
+import com.security.learn.core.validate.code.ImageCode;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -15,7 +16,7 @@ import java.util.Random;
  * @email 190642964@qq.com
  * @create 2017-11-30 15:09
  **/
-public class ImageGenerator implements ValidateCodeGenerator {
+public class ImageCodeGenerator implements ValidateCodeGenerator {
 
     private SecurityProperties securityProperties;
 

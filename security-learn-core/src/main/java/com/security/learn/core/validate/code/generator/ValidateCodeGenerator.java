@@ -1,5 +1,6 @@
-package com.security.learn.core.validate.code;
+package com.security.learn.core.validate.code.generator;
 
+import com.security.learn.core.validate.code.ValidateCode;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**
@@ -14,8 +15,8 @@ public interface ValidateCodeGenerator {
     /**
      * 验证码生成器
      * @param request  ServletWebRequest
-     * @return ImageCode
+     * @return ValidateCode
      */
-    ImageCode generate(ServletWebRequest request);
+    ValidateCode generate(ServletWebRequest request);
 
 }
