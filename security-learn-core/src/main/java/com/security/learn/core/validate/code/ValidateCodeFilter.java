@@ -88,7 +88,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
      */
     private void validate(ServletWebRequest request) throws ServletRequestBindingException {
         // 从session中获取验证码
-        ImageValidateCode codeInSession = (ImageValidateCode) sessionStrategy.getAttribute(request, ValidateCodeProcessor.SESSION_KEY_PREFIX + "IMAGECODE");
+        ImageValidateCode codeInSession = (ImageValidateCode) sessionStrategy.getAttribute(request, ValidateCodeProcessor.SESSION_KEY_PREFIX + "IMAGE");
         // 从请求中拿到验证码
         String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), "imageCode");
 
