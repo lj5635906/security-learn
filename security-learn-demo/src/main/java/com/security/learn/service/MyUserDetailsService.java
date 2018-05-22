@@ -7,23 +7,26 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.social.security.SocialUser;
+import org.springframework.social.security.SocialUserDetails;
+import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
 /**
- * ${DESCRIPTION}
+ * 用户认证相关
  *
  * @author roger
  * @email 190642964@qq.com
  * @create 2018-05-17 13:54
  **/
 @Component
-public class MyUserDetailsService implements UserDetailsService {
+public class MyUserDetailsService implements UserDetailsService, SocialUserDetailsService {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -32,8 +35,23 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.info("登陆用户名： {}", username);
-        UserInfo userInfo = repository.findByUsernameOrMobile(username,username);
+        logger.info("表单登陆用户名： {}", username);
+        return buildUser(null, username);
+    }
+
+    @Override
+    public SocialUserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
+        logger.info("社交登陆用户Id ： {}", userId);
+        return buildUser(userId, null);
+    }
+
+    private SocialUserDetails buildUser(String userId, String username) {
+        UserInfo userInfo = null;
+        if (StringUtils.isEmpty(userId)) {
+            userInfo = repository.findByUsernameOrMobile(username, username);
+        } else {
+            repository.findOne(Long.valueOf(userId));
+        }
         if (null == userInfo) {
             throw new UsernameNotFoundException("用户信息不存在.");
         }
@@ -53,6 +71,6 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         // 授权
         List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList("admin");
-        return new User(userInfo.getUsername(), userInfo.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        return new SocialUser(userInfo.getUsername(), userInfo.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 }

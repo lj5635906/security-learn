@@ -11,7 +11,15 @@ import com.security.learn.core.constants.LoginResponseType;
  **/
 public class BrowserProperties {
 
+    /**
+     * 标准登陆页面
+     */
     private String loginPage ="/security-signIn.html";
+
+    /**
+     * 标准注册页面
+     */
+    private String signUpUrl = "security-signUp.html";
 
     private LoginResponseType loginType = LoginResponseType.JSON;
 
@@ -42,5 +50,13 @@ public class BrowserProperties {
 
     public void setRememberMeSeconds(int rememberMeSeconds) {
         this.rememberMeSeconds = rememberMeSeconds;
+    }
+
+    public String getSignUpUrl() {
+        return signUpUrl;
+    }
+
+    public void setSignUpUrl(String signUpUrl) {
+        this.signUpUrl = signUpUrl;
     }
 }

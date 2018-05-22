@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
@@ -47,6 +48,8 @@ public class BrowserSecurityConfig extends AbstractBaseSecurityConfig {
     private SmsValidateCodeAuthenticationConfig smsValidateCodeAuthenticationConfig;
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+    @Autowired
+    private SpringSocialConfigurer springSocialConfigurer;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -60,6 +63,9 @@ public class BrowserSecurityConfig extends AbstractBaseSecurityConfig {
                 // 根据短信认证 配置
                 .apply(smsValidateCodeAuthenticationConfig)
                 .and()
+                // 添加社交登陆相关配置
+                .apply(springSocialConfigurer)
+                .and()
                 // 记住我相关
                 .rememberMe()
                 .tokenRepository(persistentTokenRepository())
@@ -70,7 +76,10 @@ public class BrowserSecurityConfig extends AbstractBaseSecurityConfig {
                 // 不需要身份认证的URL
                 .antMatchers(SecurityConstants.DEFAULT_UNAUTHORIZED_URL,
                         securityProperties.getBrowser().getLoginPage(),
-                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*").permitAll()
+                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
+                        securityProperties.getBrowser().getSignUpUrl(),
+                        "/user/register")
+                    .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
