@@ -1,5 +1,6 @@
 package com.security.learn.core.validate.code;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
  * @email 190642964@qq.com
  * @create 2018-05-17 16:40
  **/
-public class ValidateCode {
+public class ValidateCode implements Serializable{
 
     /**
      * 验证码
