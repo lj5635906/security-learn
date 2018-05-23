@@ -2,6 +2,7 @@ package com.security.learn.browser;
 
 import com.security.learn.browser.authentication.SecurityAuthenticationFailureHandler;
 import com.security.learn.browser.authentication.SecurityAuthenticationSuccessHandler;
+import com.security.learn.browser.session.CustomExpiredSessionStrategy;
 import com.security.learn.core.authentication.mobile.SmsValidateCodeAuthenticationConfig;
 import com.security.learn.core.config.AbstractBaseSecurityConfig;
 import com.security.learn.core.config.ValidateCodeSecurityConfig;
@@ -68,17 +69,28 @@ public class BrowserSecurityConfig extends AbstractBaseSecurityConfig {
                 .and()
                 // 记住我相关
                 .rememberMe()
-                .tokenRepository(persistentTokenRepository())
-                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
-                .userDetailsService(userDetailsService)
-                .and()
+                    .tokenRepository(persistentTokenRepository())
+                    .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                    .userDetailsService(userDetailsService)
+                    .and()
+                .sessionManagement()
+                    // session 过期后跳转地址
+                    .invalidSessionUrl(SecurityConstants.SESSION_INVALID_URL)
+                    // 用户并发登陆
+                    .maximumSessions(1)
+                    // 用户登陆数大道最大并发数，限制后面用户登陆
+                    .maxSessionsPreventsLogin(true)
+                    .expiredSessionStrategy(new CustomExpiredSessionStrategy())
+                    .and()
+                    .and()
                 .authorizeRequests()
                 // 不需要身份认证的URL
                 .antMatchers(SecurityConstants.DEFAULT_UNAUTHORIZED_URL,
                         securityProperties.getBrowser().getLoginPage(),
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
                         securityProperties.getBrowser().getSignUpUrl(),
-                        "/user/register")
+                        "/user/register",
+                        SecurityConstants.SESSION_INVALID_URL)
                     .permitAll()
                 .anyRequest()
                 .authenticated()

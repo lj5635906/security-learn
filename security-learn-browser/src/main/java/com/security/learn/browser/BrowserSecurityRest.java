@@ -86,4 +86,14 @@ public class BrowserSecurityRest {
         socialUserInfo.setProviderUserId(connection.getKey().getProviderUserId());
         return socialUserInfo;
     }
+
+    /**
+     * session过期跳转地址
+     */
+    @GetMapping(SecurityConstants.SESSION_INVALID_URL)
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public SimpleResponse sessionInvalid(){
+        String message = "session失效";
+        return new SimpleResponse(message);
+    }
 }

@@ -40,4 +40,8 @@ public interface SecurityConstants {
      * 发送短信验证码 或 验证短信验证码时，传递手机号的参数的名称
      */
     String DEFAULT_PARAMETER_NAME_MOBILE = "mobile";
+    /**
+     * session过期跳转地址
+     */
+    String SESSION_INVALID_URL = "/session/invalid";
 }
