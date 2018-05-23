@@ -21,6 +21,11 @@ public class BrowserProperties {
      */
     private String signUpUrl = "security-signUp.html";
 
+    /**
+     * 退出URL
+     */
+    private String signOutUrl = "";
+
     private LoginResponseType loginType = LoginResponseType.JSON;
 
     /**
@@ -58,5 +63,13 @@ public class BrowserProperties {
 
     public void setSignUpUrl(String signUpUrl) {
         this.signUpUrl = signUpUrl;
+    }
+
+    public String getSignOutUrl() {
+        return signOutUrl;
+    }
+
+    public void setSignOutUrl(String signOutUrl) {
+        this.signOutUrl = signOutUrl;
     }
 }
