@@ -1,4 +1,4 @@
-package com.security.learn.browser.support;
+package com.security.learn.core.support;
 
 /**
  * ${DESCRIPTION}

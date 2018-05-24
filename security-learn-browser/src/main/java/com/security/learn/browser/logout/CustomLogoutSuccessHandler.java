@@ -1,7 +1,7 @@
 package com.security.learn.browser.logout;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.security.learn.browser.support.SimpleResponse;
+import com.security.learn.core.support.SimpleResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;

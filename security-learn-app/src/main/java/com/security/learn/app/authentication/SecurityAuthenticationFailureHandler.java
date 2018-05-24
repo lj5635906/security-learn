@@ -1,13 +1,12 @@
 /**
  *
  */
-package com.security.learn.browser.authentication;
+package com.security.learn.app.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.security.learn.core.support.SimpleResponse;
 import com.security.learn.core.constants.LoginResponseType;
 import com.security.learn.core.properties.SecurityProperties;
+import com.security.learn.core.support.SimpleResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

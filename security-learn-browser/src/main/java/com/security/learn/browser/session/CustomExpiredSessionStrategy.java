@@ -1,7 +1,7 @@
 package com.security.learn.browser.session;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.security.learn.browser.support.SimpleResponse;
+import com.security.learn.core.support.SimpleResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.web.session.SessionInformationExpiredEvent;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;

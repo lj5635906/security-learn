@@ -32,10 +32,6 @@ import javax.sql.DataSource;
 @Configuration
 public class BrowserSecurityConfig extends AbstractBaseSecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Autowired
     private DataSource dataSource;

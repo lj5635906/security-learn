@@ -15,9 +15,14 @@
     <url>http://www.example.com</url>
 
     <dependencies>
-        <dependency>
+        <!--<dependency>
             <groupId>com.security.learn</groupId>
             <artifactId>security-learn-browser</artifactId>
+            <version>${security-learn.version}</version>
+        </dependency>-->
+        <dependency>
+            <groupId>com.security.learn</groupId>
+            <artifactId>security-learn-app</artifactId>
             <version>${security-learn.version}</version>
         </dependency>
         <dependency>

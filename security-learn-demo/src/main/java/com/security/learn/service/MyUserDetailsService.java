@@ -70,7 +70,7 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
             accountNonLocked = false;
         }
         // 授权
-        List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList("admin");
+        List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER");
         return new SocialUser(userInfo.getUsername(), userInfo.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 }

@@ -1,6 +1,6 @@
 package com.security.learn.browser;
 
-import com.security.learn.browser.support.SimpleResponse;
+import com.security.learn.core.support.SimpleResponse;
 import com.security.learn.browser.support.SocialUserInfo;
 import com.security.learn.core.constants.SecurityConstants;
 import com.security.learn.core.properties.SecurityProperties;
@@ -15,7 +15,6 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.ProviderSignInUtils;
-import org.springframework.social.security.SocialUser;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
